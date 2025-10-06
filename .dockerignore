@@ -1,0 +1,72 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+dist
+build
+.eggs
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+*.cover
+
+# Virtual environments
+.venv
+venv
+ENV
+env
+
+# Old Poetry files (migrated to uv)
+poetry.lock
+poetry.toml
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+*.md
+!README.md
+docs
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Testing
+tests
+test_*.py
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Logs
+*.log
+logs
+
+# Temporary files
+tmp
+temp
+*.tmp
