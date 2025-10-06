@@ -14,9 +14,9 @@ class BaseSearchRequest(BaseModel):
     page: int | None = Field(None, description="page of results to return. Defaults to 1", ge=1)
     backend: str | None = Field(None, description='single or comma-delimited backends. Defaults to "auto"')
 
-    def to_dict(self, updates: dict[str, Any]) -> dict[str, Any]:
+    def to_dict(self, defaults: dict[str, Any]) -> dict[str, Any]:
         """Convert request to dictionary"""
-        return {**self.model_dump(exclude_none=True), **updates}
+        return {**defaults, **self.model_dump(exclude_none=True)}
 
 
 class TextSearchRequest(BaseSearchRequest):

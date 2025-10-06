@@ -1,12 +1,11 @@
 import logging
-from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
+from models import BooksSearchRequest, ImagesSearchRequest, NewsSearchRequest, TextSearchRequest, VideosSearchRequest
 
 from app.auth import verify_token
 from app.config import settings
-from app.ddgs import get_ddgs
-from app.models import BooksSearchRequest, ImagesSearchRequest, NewsSearchRequest, TextSearchRequest, VideosSearchRequest
+from app.ddgs import BooksSearchItem, ImagesSearchItem, NewsSearchItem, TextSearchItem, VideosSearchItem, get_ddgs
 
 logger = logging.getLogger(__name__)
 
@@ -14,18 +13,19 @@ router = APIRouter(prefix="/search", tags=["Search"], dependencies=[Depends(veri
 
 
 @router.get("")
-async def search(request: TextSearchRequest = Query(...)) -> list[dict[str, Any]]:
+async def search(request: TextSearchRequest = Query(...)) -> list[TextSearchItem]:
     """Quick search (direct text search)"""
     params = request.to_dict(settings.default_search_params)
     try:
         results = await get_ddgs().text(**params)
         return results
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) from e
+        logger.error(f"Error searching text: {e}, params: {params}")
+        return []
 
 
 @router.post("/text")
-async def search_text(request: TextSearchRequest) -> list[dict[str, Any]]:
+async def search_text(request: TextSearchRequest) -> list[TextSearchItem]:
     """Text search"""
     params = request.to_dict(settings.default_search_params)
     try:
@@ -37,7 +37,7 @@ async def search_text(request: TextSearchRequest) -> list[dict[str, Any]]:
 
 
 @router.post("/images")
-async def search_images(request: ImagesSearchRequest) -> list[dict[str, Any]]:
+async def search_images(request: ImagesSearchRequest) -> list[ImagesSearchItem]:
     """Image search"""
     params = request.to_dict(settings.default_search_params)
     # Add image-specific parameters
@@ -61,7 +61,7 @@ async def search_images(request: ImagesSearchRequest) -> list[dict[str, Any]]:
 
 
 @router.post("/videos")
-async def search_videos(request: VideosSearchRequest) -> list[dict[str, Any]]:
+async def search_videos(request: VideosSearchRequest) -> list[VideosSearchItem]:
     """Video search"""
     params = request.to_dict(settings.default_search_params)
     # Add video-specific parameters
@@ -81,7 +81,7 @@ async def search_videos(request: VideosSearchRequest) -> list[dict[str, Any]]:
 
 
 @router.post("/news")
-async def search_news(request: NewsSearchRequest) -> list[dict[str, Any]]:
+async def search_news(request: NewsSearchRequest) -> list[NewsSearchItem]:
     """News search"""
     params = request.to_dict(settings.default_search_params)
     try:
@@ -93,7 +93,7 @@ async def search_news(request: NewsSearchRequest) -> list[dict[str, Any]]:
 
 
 @router.post("/books")
-async def search_books(request: BooksSearchRequest) -> list[dict[str, Any]]:
+async def search_books(request: BooksSearchRequest) -> list[BooksSearchItem]:
     """Books search"""
     params = request.to_dict(settings.default_search_params)
     try:

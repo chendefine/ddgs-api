@@ -1,7 +1,7 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from app.config import settings
-from app.ddgs import get_ddgs
+from app.ddgs import BooksSearchItem, ImagesSearchItem, NewsSearchItem, TextSearchItem, VideosSearchItem, get_ddgs
 
 from .server import mcp
 
@@ -14,7 +14,7 @@ if "text" in settings.mcp_enable_tools:
     async def search_text(
         query: Annotated[str, "search query"],
         max_results: Annotated[int, "maximum number of results to return"] = default_max_results,
-    ) -> list[dict[str, Any]]:
+    ) -> list[TextSearchItem]:
         """search web pages"""
         params = {"query": query, "max_results": max_results}
         try:
@@ -30,7 +30,7 @@ if "images" in settings.mcp_enable_tools:
     async def search_images(
         query: Annotated[str, "search query"],
         max_results: Annotated[int, "maximum number of results to return"] = default_max_results,
-    ) -> list[dict[str, Any]]:
+    ) -> list[ImagesSearchItem]:
         """search images"""
 
         params = {"query": query, "max_results": max_results}
@@ -47,7 +47,7 @@ if "videos" in settings.mcp_enable_tools:
     async def search_videos(
         query: Annotated[str, "search query"],
         max_results: Annotated[int, "maximum number of results to return"] = default_max_results,
-    ) -> list[dict[str, Any]]:
+    ) -> list[VideosSearchItem]:
         """search videos"""
 
         params = {"query": query, "max_results": max_results}
@@ -64,7 +64,7 @@ if "news" in settings.mcp_enable_tools:
     async def search_news(
         query: Annotated[str, "search query"],
         max_results: Annotated[int, "maximum number of results to return"] = default_max_results,
-    ) -> list[dict[str, Any]]:
+    ) -> list[NewsSearchItem]:
         """search news"""
 
         params = {"query": query, "max_results": max_results}
@@ -81,7 +81,7 @@ if "books" in settings.mcp_enable_tools:
     async def search_books(
         query: Annotated[str, "search query"],
         max_results: Annotated[int, "maximum number of results to return"] = default_max_results,
-    ) -> list[dict[str, Any]]:
+    ) -> list[BooksSearchItem]:
         """search books"""
 
         params = {"query": query, "max_results": max_results}
